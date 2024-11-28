@@ -1,0 +1,4 @@
+/home/strongfood/.nxp/SDKs/SDK_2_16_000_FRDM-K32L3A6/devices/K32L3A60/drivers/fsl_common_arm.c:121:6:MSDK_EnableCpuCycleCounter	8	static
+/home/strongfood/.nxp/SDKs/SDK_2_16_000_FRDM-K32L3A6/devices/K32L3A60/drivers/fsl_common_arm.c:139:10:MSDK_GetCpuCycleCount	4	static
+/home/strongfood/.nxp/SDKs/SDK_2_16_000_FRDM-K32L3A6/devices/K32L3A60/drivers/fsl_common_arm.c:175:13:DelayLoop	16	static
+/home/strongfood/.nxp/SDKs/SDK_2_16_000_FRDM-K32L3A6/devices/K32L3A60/drivers/fsl_common_arm.c:205:6:SDK_DelayAtLeastUs	40	static

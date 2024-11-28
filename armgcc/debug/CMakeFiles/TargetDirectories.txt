@@ -1,0 +1,3 @@
+/home/strongfood/Documents/VS_Code/ARM-Development/FRDM-K32L3A6/frdmk32l3a6_bubble_cm4/armgcc/debug/CMakeFiles/bubble_cm4.elf.dir
+/home/strongfood/Documents/VS_Code/ARM-Development/FRDM-K32L3A6/frdmk32l3a6_bubble_cm4/armgcc/debug/CMakeFiles/edit_cache.dir
+/home/strongfood/Documents/VS_Code/ARM-Development/FRDM-K32L3A6/frdmk32l3a6_bubble_cm4/armgcc/debug/CMakeFiles/rebuild_cache.dir

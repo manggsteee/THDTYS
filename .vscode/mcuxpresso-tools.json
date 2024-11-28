@@ -1,0 +1,23 @@
+{
+  "version": "24.9",
+  "toolchainPath": "/home/strongfood/.mcuxpressotools/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi",
+  "linkedProjects": [],
+  "trustZoneType": "none",
+  "multicoreType": "none",
+  "debug": {
+    "linkserver": {
+      "device": "K32L3A60xxx:FRDM-K32L3A6",
+      "core": "cm4"
+    },
+    "pemicro": {},
+    "segger": {}
+  },
+  "projectType": "sdk-freestanding",
+  "sdk": {
+    "version": "2.16.000",
+    "path": "/home/strongfood/.nxp/SDKs/SDK_2_16_000_FRDM-K32L3A6",
+    "boardId": "frdmk32l3a6",
+    "deviceId": "K32L3A60xxx",
+    "coreId": "cm4_K32L3A60xxx"
+  }
+}

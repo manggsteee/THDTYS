@@ -1,0 +1,8 @@
+/home/strongfood/.nxp/SDKs/SDK_2_16_000_FRDM-K32L3A6/devices/K32L3A60/drivers/./fsl_clock.h:766:20:CLOCK_SetIpSrc	24	static
+/home/strongfood/Documents/VS_Code/ARM-Development/FRDM-K32L3A6/frdmk32l3a6_bubble_cm4/board.c:23:6:BOARD_InitDebugConsole	16	static
+/home/strongfood/Documents/VS_Code/ARM-Development/FRDM-K32L3A6/frdmk32l3a6_bubble_cm4/board.c:32:6:BOARD_LPI2C_Init	48	static
+/home/strongfood/Documents/VS_Code/ARM-Development/FRDM-K32L3A6/frdmk32l3a6_bubble_cm4/board.c:50:10:BOARD_LPI2C_Send	48	static
+/home/strongfood/Documents/VS_Code/ARM-Development/FRDM-K32L3A6/frdmk32l3a6_bubble_cm4/board.c:70:10:BOARD_LPI2C_Receive	48	static
+/home/strongfood/Documents/VS_Code/ARM-Development/FRDM-K32L3A6/frdmk32l3a6_bubble_cm4/board.c:90:6:BOARD_Accel_I2C_Init	8	static
+/home/strongfood/Documents/VS_Code/ARM-Development/FRDM-K32L3A6/frdmk32l3a6_bubble_cm4/board.c:95:10:BOARD_Accel_I2C_Send	40	static
+/home/strongfood/Documents/VS_Code/ARM-Development/FRDM-K32L3A6/frdmk32l3a6_bubble_cm4/board.c:102:10:BOARD_Accel_I2C_Receive	32	static

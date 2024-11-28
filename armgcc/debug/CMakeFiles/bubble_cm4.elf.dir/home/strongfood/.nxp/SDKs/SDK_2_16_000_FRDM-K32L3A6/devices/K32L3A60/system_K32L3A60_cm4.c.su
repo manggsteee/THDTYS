@@ -1,0 +1,3 @@
+/home/strongfood/.nxp/SDKs/SDK_2_16_000_FRDM-K32L3A6/devices/K32L3A60/system_K32L3A60_cm4.c:61:6:SystemInit	8	static
+/home/strongfood/.nxp/SDKs/SDK_2_16_000_FRDM-K32L3A6/devices/K32L3A60/system_K32L3A60_cm4.c:107:6:SystemCoreClockUpdate	16	static
+/home/strongfood/.nxp/SDKs/SDK_2_16_000_FRDM-K32L3A6/devices/K32L3A60/system_K32L3A60_cm4.c:141:29:SystemInitHook	4	static

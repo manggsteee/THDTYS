@@ -1,0 +1,2 @@
+/home/strongfood/.nxp/SDKs/SDK_2_16_000_FRDM-K32L3A6/devices/K32L3A60/utilities/debug_console_lite/fsl_assert.c:15:28:fsl_assert_hook	24	static
+/home/strongfood/.mcuxpressotools/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/arm-none-eabi/include/assert.h:41:6:__assert_func	32	static
