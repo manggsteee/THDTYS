@@ -15,6 +15,8 @@
 #include "fsl_common.h"
 #include "fsl_gpio.h"
 #include "fsl_port.h"
+#include "max30102.h"
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -26,6 +28,7 @@
 #define BOARD_TIMER_SOURCE_CLOCK (CLOCK_GetIpFreq(kCLOCK_Tpm2))
 /* LPI2C */
 #define I2C_BAUDRATE 100000U
+#define I2C_MAX30102_BAUDRATE (4 * I2C_BAUDRATE)
 
 #define I2C_RELEASE_SDA_PORT PORTE
 #define I2C_RELEASE_SCL_PORT PORTE
@@ -112,6 +115,7 @@ void BOARD_I2C_ReleaseBus(void)
     GPIO_PinWrite(I2C_RELEASE_SDA_GPIO, I2C_RELEASE_SDA_PIN, 1U);
     i2c_release_bus_delay();
 }
+
 /* Initialize timer module */
 static void Timer_Init(void)
 {
@@ -157,6 +161,25 @@ static void Board_UpdatePwm(uint16_t x, uint16_t y, uint16_t z)
     TPM_UpdatePwmDutycycle(BOARD_TIMER_BASEADDR, (tpm_chnl_t)BOARD_SECOND_TIMER_CHANNEL, kTPM_EdgeAlignedPwm, z);
 }
 
+/* I2C1 init function */
+void I2C1_Init(void)
+{
+    lpi2c_master_config_t masterConfig;
+
+    CLOCK_EnableClock(kCLOCK_Lpi2c1);
+    CLOCK_EnableClock(kCLOCK_PortB);
+
+    /* PORTB13 (pin G3) is configured as LPI2C1_SDA */
+    PORT_SetPinMux(PORTB, 13U, kPORT_MuxAlt3);
+    /* PORTB14 (pin G2) is configured as LPI2C1_SCL */
+    PORT_SetPinMux(PORTB, 14U, kPORT_MuxAlt3);
+
+    LPI2C_MasterGetDefaultConfig(&masterConfig);
+    masterConfig.baudRate_Hz = I2C_MAX30102_BAUDRATE;
+
+    LPI2C_MasterInit(LPI2C1, &masterConfig, CLOCK_GetIpFreq(kCLOCK_Lpi2c1));
+}
+
 int main(void)
 {
     fxos_handle_t fxosHandle = {0};
@@ -179,7 +202,14 @@ int main(void)
     int16_t zDuty = 0;
 
     uint8_t i = 0;
+    uint8_t avarage = 10;
     uint8_t array_addr_size = 0;
+
+    uint16_t sumAngle = 0;
+    uint16_t deltaSumAngle = 0;
+
+    uint32_t redData = 0;
+    uint32_t irData = 0;
 
     /* Init board hardware. */
     CLOCK_EnableClock(kCLOCK_GpioE);
@@ -189,10 +219,14 @@ int main(void)
     BOARD_I2C_ConfigurePins();
     BOARD_InitDebugConsole();
 
+    /* I2C Initialize to MAX30102 */
+    I2C1_Init();
+
     /* Select the clock source for the TPM counter as  fast internal RC oscillator */
     CLOCK_SetIpSrc(kCLOCK_Tpm2, kCLOCK_IpSrcFircAsync);
 
     CLOCK_SetIpSrc(kCLOCK_Lpi2c3, kCLOCK_IpSrcFircAsync);
+    CLOCK_SetIpSrc(kCLOCK_Lpi2c1, kCLOCK_IpSrcFircAsync);
 
     /* I2C initialize */
     BOARD_Accel_I2C_Init();
@@ -243,9 +277,15 @@ int main(void)
     /* Init timer */
     Timer_Init();
 
+    /* MAX30102 Initialize */
+    MAX30102_Init(LPI2C1);
+
     /* Print a note to terminal */
     PRINTF("\r\nWelcome to the BUBBLE example\r\n");
     PRINTF("\r\nYou will see angle data change in the console when change the angles of board\r\n");
+
+    /* Set 'i' variable to 0 for avarage calculation */
+    i = 0;
 
     /* Main loop. Get sensor data and update duty cycle */
     while (1)
@@ -309,21 +349,35 @@ int main(void)
         Board_UpdatePwm(xDuty, yDuty, zDuty);
 
         /* Print out the angle data. */
-        int16_t sumAngle = sqrt(xAngle * xAngle + yAngle * yAngle + zAngle * zAngle);
-        PRINTF("sum = %d\r\n", sumAngle);
-        int16_t deltaSumAngle = sumAngle - 90;
-        PRINTF("delta = %d\r\n", deltaSumAngle);
-
-        if (abs(deltaSumAngle) >= 0 && abs(deltaSumAngle) <= 5)
+        if (i == avarage)
         {
-            PRINTF("Ngu sau");
+            /* Calculate the avarage of 10 values */
+            sumAngle /= 10; // Calculate the avarage of 10 values
+            deltaSumAngle = abs(sumAngle - 90);
+            PRINTF("x= %2d, y = %2d, z = %2d, sum = %d, delta = %d ", xAngle, yAngle, zAngle, sumAngle, deltaSumAngle);
+
+            if (deltaSumAngle >= 0 && deltaSumAngle <= 5)
+            {
+                PRINTF("=> Ngu sau\r\n");
+            }
+            else
+            {
+                PRINTF("=> Ngu nong\r\n");
+            }
+
+            /* Reading the MAX30102 SpO2 value */
+            MAX30102_ReadFIFO(LPI2C1, &redData, &irData);
+            PRINTF("Red Data: %u, IR Data: %u\n", redData, irData);
+
+            /* Reset variables */
+            sumAngle = 0; // Reset 'sumAngle' variable
+            i = 0;        // Reset 'i' variable
         }
         else
         {
-            PRINTF("Ngu nong");
+            SDK_DelayAtLeastUs(10000U, SystemCoreClock);                           // Delay 10000 us
+            sumAngle += sqrt(xAngle * xAngle + yAngle * yAngle + zAngle * zAngle); // Calculate the sum of 10 values
+            i++;                                                                   // Increase 'i' variable
         }
-        SDK_DelayAtLeastUs(250000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-        // PRINTF("x= %2d y = %2d z = %2d sum = %2d delta = %.2f\r\n", xAngle, yAngle, zAngle, sumAngle, deltaSumAngle);
-        //  PRINTF("delta = %.2f", deltaSumAngle);
     }
 }

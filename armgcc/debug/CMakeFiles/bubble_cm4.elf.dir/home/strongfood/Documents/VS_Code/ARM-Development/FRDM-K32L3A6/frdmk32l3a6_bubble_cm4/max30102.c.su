@@ -1,0 +1,4 @@
+/home/strongfood/Documents/VS_Code/ARM-Development/FRDM-K32L3A6/frdmk32l3a6_bubble_cm4/max30102.c:4:6:MAX30102_WriteRegister	48	static
+/home/strongfood/Documents/VS_Code/ARM-Development/FRDM-K32L3A6/frdmk32l3a6_bubble_cm4/max30102.c:20:9:MAX30102_ReadRegister	48	static
+/home/strongfood/Documents/VS_Code/ARM-Development/FRDM-K32L3A6/frdmk32l3a6_bubble_cm4/max30102.c:46:6:MAX30102_Init	16	static
+/home/strongfood/Documents/VS_Code/ARM-Development/FRDM-K32L3A6/frdmk32l3a6_bubble_cm4/max30102.c:59:6:MAX30102_ReadFIFO	56	static

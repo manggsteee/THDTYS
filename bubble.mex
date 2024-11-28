@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding= "UTF-8" ?>
-<configuration name="" version="1.6" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_1.6 http://mcuxpresso.nxp.com/XSD/mex_configuration_1.6.xsd" uuid="2289592c-8102-4793-b4e8-4d45349cccec" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<configuration name="" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_16 http://mcuxpresso.nxp.com/XSD/mex_configuration_16.xsd" uuid="2289592c-8102-4793-b4e8-4d45349cccec" version="16" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_16" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
       <processor>K32L3A60xxx</processor>
       <package>K32L3A60VPJ1A</package>
@@ -14,11 +14,20 @@
       <validate_boot_init_only>true</validate_boot_init_only>
       <generate_extended_information>false</generate_extended_information>
       <generate_code_modified_registers_only>false</generate_code_modified_registers_only>
+      <update_include_paths>true</update_include_paths>
+      <generate_registers_defines>false</generate_registers_defines>
    </preferences>
    <tools>
-      <pins name="Pins" version="6.0" enabled="true" update_project_code="true">
+      <pins name="Pins" version="16.0" enabled="true" update_project_code="true">
+         <generated_project_files>
+            <file path="board/pin_mux.c" update_enabled="true"/>
+            <file path="board/pin_mux.h" update_enabled="true"/>
+         </generated_project_files>
          <pins_profile>
-            <processor_version>0.0.7</processor_version>
+            <processor_version>16.3.0</processor_version>
+            <external_user_signals>
+               <properties/>
+            </external_user_signals>
          </pins_profile>
          <functions_list>
             <function name="BOARD_InitPins">
@@ -29,12 +38,17 @@
                   <enableClock>true</enableClock>
                </options>
                <dependencies>
-                  <dependency resourceType="Peripheral" resourceId="LPUART0" description="Peripheral LPUART0 is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                  <dependency resourceType="Peripheral" resourceId="LPUART0" description="Peripheral LPUART0 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
                   </dependency>
-                  <dependency resourceType="Peripheral" resourceId="TPM2" description="Peripheral TPM2 is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                  <dependency resourceType="Peripheral" resourceId="TPM2" description="Peripheral TPM2 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="Peripheral" resourceId="LPI2C1" description="Peripheral LPI2C1 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
@@ -55,16 +69,19 @@
                   <pin peripheral="LPUART0" signal="TX" pin_num="P3" pin_signal="LPCMP0_IN1/PTC8/LPSPI0_SCK/LPUART0_TX/LPI2C0_HREQ/TPM0_CH1"/>
                   <pin peripheral="TPM2" signal="CH, 0" pin_num="D6" pin_signal="PTA24/LPSPI2_PCS0/LPSPI1_SCK/LPI2C2_SCL/FB_OE_b/TPM2_CH0"/>
                   <pin peripheral="TPM2" signal="CH, 1" pin_num="E6" pin_signal="PTA23/LPSPI2_SIN/LPSPI1_PCS3/LPI2C2_SDA/FB_AD15/TPM2_CH1"/>
+                  <pin peripheral="LPI2C1" signal="SCL" pin_num="G2" pin_signal="PTB14/LPUART2_RTS/LPI2C1_SCL/LPI2C0_SCLS/FB_AD24/TPM3_CH1/FXIO0_D4"/>
+                  <pin peripheral="LPI2C1" signal="SDA" pin_num="G3" pin_signal="PTB13/LPUART2_CTS/LPI2C1_SDA/LPI2C0_SDAS/FB_AD25/TPM3_CH0/FXIO0_D3"/>
                </pins>
             </function>
             <function name="BOARD_I2C_ConfigurePins">
                <description>Configures pin routing and optionally pin electrical features.</description>
                <options>
+                  <callFromInitBoot>false</callFromInitBoot>
                   <coreID>cm4</coreID>
                   <enableClock>true</enableClock>
                </options>
                <dependencies>
-                  <dependency resourceType="Peripheral" resourceId="LPI2C3" description="Peripheral LPI2C3 is not initialized" problem_level="1" source="Pins:BOARD_I2C_ConfigurePins">
+                  <dependency resourceType="Peripheral" resourceId="LPI2C3" description="Peripheral LPI2C3 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_I2C_ConfigurePins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
@@ -81,14 +98,6 @@
                   </dependency>
                </dependencies>
                <pins>
-                  <pin peripheral="LPI2C3" signal="SDA" pin_num="G15" pin_signal="PTE29/LPUART3_RX/LPI2C3_SDA/FXIO0_D30">
-                     <pin_features>
-                        <pin_feature name="slew_rate" value="fast"/>
-                        <pin_feature name="open_drain" value="enable"/>
-                        <pin_feature name="pull_select" value="up"/>
-                        <pin_feature name="pull_enable" value="enable"/>
-                     </pin_features>
-                  </pin>
                   <pin peripheral="LPI2C3" signal="SCL" pin_num="G17" pin_signal="PTE30/LPUART3_TX/LPI2C3_SCL/TPM2_CLKIN/FXIO0_D31">
                      <pin_features>
                         <pin_feature name="slew_rate" value="fast"/>
@@ -97,16 +106,21 @@
                         <pin_feature name="pull_enable" value="enable"/>
                      </pin_features>
                   </pin>
+                  <pin peripheral="LPI2C3" signal="SDA" pin_num="G15" pin_signal="PTE29/LPUART3_RX/LPI2C3_SDA/FXIO0_D30"/>
                </pins>
             </function>
          </functions_list>
       </pins>
-      <clocks name="Clocks" version="6.0" enabled="true" update_project_code="true">
+      <clocks name="Clocks" version="14.0" enabled="true" update_project_code="true">
+         <generated_project_files>
+            <file path="board/clock_config.c" update_enabled="true"/>
+            <file path="board/clock_config.h" update_enabled="true"/>
+         </generated_project_files>
          <clocks_profile>
-            <processor_version>0.0.7</processor_version>
+            <processor_version>16.3.0</processor_version>
          </clocks_profile>
          <clock_configurations>
-            <clock_configuration name="BOARD_BootClockRUN">
+            <clock_configuration name="BOARD_BootClockRUN" id_prefix="" prefix_user_defined="false">
                <description></description>
                <options/>
                <dependencies>
@@ -129,23 +143,29 @@
                   <clock_output id="FIRCDIV2_CLK.outFreq" value="48 MHz" locked="false" accuracy=""/>
                   <clock_output id="FIRCDIV3_CLK.outFreq" value="48 MHz" locked="false" accuracy=""/>
                   <clock_output id="LPO_CLK.outFreq" value="1 kHz" locked="false" accuracy=""/>
+                  <clock_output id="PCC0.PCC_LPI2C1_CLK.outFreq" value="8 MHz" locked="false" accuracy=""/>
+                  <clock_output id="PCC1.PCC_LPI2C3_CLK.outFreq" value="8 MHz" locked="false" accuracy=""/>
                   <clock_output id="Platform_clock.outFreq" value="48 MHz" locked="false" accuracy=""/>
+                  <clock_output id="SIRCDIV2_CLK.outFreq" value="8 MHz" locked="false" accuracy=""/>
                   <clock_output id="SIRCDIV3_CLK.outFreq" value="8 MHz" locked="false" accuracy=""/>
                   <clock_output id="Slow_clock.outFreq" value="24 MHz" locked="false" accuracy=""/>
                   <clock_output id="System_clock.outFreq" value="48 MHz" locked="false" accuracy=""/>
                </clock_outputs>
                <clock_settings>
+                  <setting id="PCC0.PCC_LPI2C1_SEL.sel" value="SCG.SIRCDIV2_CLK" locked="false"/>
+                  <setting id="PCC1.PCC_LPI2C3_SEL.sel" value="SCG.SIRCDIV2_CLK" locked="false"/>
                   <setting id="SCG.FIRCDIV1.scale" value="1" locked="true"/>
                   <setting id="SCG.FIRCDIV2.scale" value="1" locked="true"/>
                   <setting id="SCG.FIRCDIV3.scale" value="1" locked="true"/>
                   <setting id="SCG.LPFLLDIV1.scale" value="1" locked="true"/>
                   <setting id="SCG.LPFLLDIV3.scale" value="0" locked="true"/>
                   <setting id="SCG.SIRCDIV1.scale" value="0" locked="true"/>
+                  <setting id="SCG.SIRCDIV2.scale" value="1" locked="true"/>
                   <setting id="SCG.SIRCDIV3.scale" value="1" locked="true"/>
                </clock_settings>
                <called_from_default_init>true</called_from_default_init>
             </clock_configuration>
-            <clock_configuration name="BOARD_BootClockHSRUN">
+            <clock_configuration name="BOARD_BootClockHSRUN" id_prefix="" prefix_user_defined="false">
                <description></description>
                <options/>
                <dependencies/>
@@ -180,7 +200,7 @@
                </clock_settings>
                <called_from_default_init>false</called_from_default_init>
             </clock_configuration>
-            <clock_configuration name="BOARD_BootClockVLPR">
+            <clock_configuration name="BOARD_BootClockVLPR" id_prefix="" prefix_user_defined="false">
                <description></description>
                <options/>
                <dependencies>
@@ -223,26 +243,213 @@
             </clock_configuration>
          </clock_configurations>
       </clocks>
-      <periphs name="Peripherals" version="6.0" enabled="true" update_project_code="true">
+      <dcdx name="DCDx" version="3.0" enabled="false" update_project_code="true">
+         <generated_project_files/>
+         <dcdx_profile>
+            <processor_version>N/A</processor_version>
+         </dcdx_profile>
+         <dcdx_configurations/>
+      </dcdx>
+      <periphs name="Peripherals" version="15.0" enabled="true" update_project_code="true">
+         <dependencies>
+            <dependency resourceType="SWComponent" resourceId="platform.drivers.lpi2c" description="LPI2C Driver is not found in the toolchain/IDE project. The project will not compile!" problem_level="2" source="Peripherals">
+               <feature name="enabled" evaluation="equal">
+                  <data type="Boolean">true</data>
+               </feature>
+            </dependency>
+            <dependency resourceType="SWComponent" resourceId="platform.drivers.lpi2c" description="An unsupported version of the LPI2C Driver in the toolchain/IDE project. Required: ${required_value}, actual: ${actual_value}. The project might not compile correctly." problem_level="1" source="Peripherals">
+               <feature name="version" evaluation="greaterOrEqual">
+                  <data type="Version" maxValue="2.5.9">2.2.0</data>
+               </feature>
+            </dependency>
+            <dependency resourceType="Tool" resourceId="Clocks" description="The Clocks tool is required by the Peripherals tool, but it is disabled." problem_level="2" source="Peripherals">
+               <feature name="enabled" evaluation="equal">
+                  <data>true</data>
+               </feature>
+            </dependency>
+         </dependencies>
+         <generated_project_files>
+            <file path="board/peripherals.c" update_enabled="true"/>
+            <file path="board/peripherals.h" update_enabled="true"/>
+         </generated_project_files>
          <peripherals_profile>
-            <processor_version>0.0.7</processor_version>
+            <processor_version>16.3.0</processor_version>
          </peripherals_profile>
          <functional_groups>
             <functional_group name="BOARD_InitPeripherals" uuid="953ddf27-7431-442a-ad6c-39f3c96f516f" called_from_default_init="true" id_prefix="" core="cm4">
                <description></description>
                <options/>
-               <dependencies/>
-               <instances/>
+               <dependencies>
+                  <dependency resourceType="ClockOutput" resourceId="PCC0.PCC_LPI2C1_CLK" description="LPI2C1 clock is inactive." problem_level="1" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="frequency" evaluation="greaterThan">
+                        <data type="Frequency" unit="Hz">0</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PeripheralUnifiedSignal" resourceId="LPI2C1.lpi2c_scl" description="Signal serial clock is not routed." problem_level="1" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="routed" evaluation="">
+                        <data type="Boolean">true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PeripheralUnifiedSignal" resourceId="LPI2C1.lpi2c_sda" description="Signal serial data is not routed." problem_level="1" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="routed" evaluation="">
+                        <data type="Boolean">true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="ClockOutput" resourceId="PCC1.PCC_LPI2C3_CLK" description="LPI2C3 clock is inactive." problem_level="1" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="frequency" evaluation="greaterThan">
+                        <data type="Frequency" unit="Hz">0</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PeripheralUnifiedSignal" resourceId="LPI2C3.lpi2c_scl" description="Signal serial clock is not routed." problem_level="1" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="routed" evaluation="">
+                        <data type="Boolean">true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PeripheralUnifiedSignal" resourceId="LPI2C3.lpi2c_sda" description="Signal serial data is not routed." problem_level="1" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="routed" evaluation="">
+                        <data type="Boolean">true</data>
+                     </feature>
+                  </dependency>
+               </dependencies>
+               <instances>
+                  <instance name="CM4_NVIC" uuid="58f721db-6d92-4868-a004-6efdbe2b4dfb" type="nvic" type_id="nvic" mode="general" peripheral="CM4_NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                     <config_set name="nvic">
+                        <array name="interrupt_table"/>
+                        <array name="interrupts"/>
+                     </config_set>
+                  </instance>
+                  <instance name="LPI2C1" uuid="90181bf3-9629-414c-89db-33f9fa52eddf" type="lpi2c" type_id="lpi2c_2.2.0" mode="master" peripheral="LPI2C1" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                     <config_set name="main">
+                        <setting name="clockSource" value="Lpi2cClock"/>
+                        <setting name="clockSourceFreq" value="GetIpFreq"/>
+                     </config_set>
+                     <config_set name="interrupt_vector"/>
+                     <config_set name="master" quick_selection="qs_master_transfer">
+                        <setting name="mode" value="transfer"/>
+                        <struct name="config">
+                           <setting name="enableMaster" value="true"/>
+                           <setting name="enableDoze" value="true"/>
+                           <setting name="debugEnable" value="false"/>
+                           <setting name="ignoreAck" value="false"/>
+                           <setting name="pinConfig" value="kLPI2C_2PinOpenDrain"/>
+                           <setting name="baudRate_Hz" value="100000"/>
+                           <setting name="busIdleTimeout_ns" value="0"/>
+                           <setting name="pinLowTimeout_ns" value="0"/>
+                           <setting name="sdaGlitchFilterWidth_ns" value="0"/>
+                           <setting name="sclGlitchFilterWidth_ns" value="0"/>
+                           <struct name="hostRequest">
+                              <setting name="enable" value="false"/>
+                              <setting name="source" value="kLPI2C_HostRequestExternalPin"/>
+                              <setting name="polarity" value="kLPI2C_HostRequestPinActiveHigh"/>
+                           </struct>
+                           <set name="edmaRequestSources">
+                              <selected/>
+                           </set>
+                        </struct>
+                        <struct name="transfer">
+                           <setting name="blocking" value="false"/>
+                           <setting name="enable_custom_handle" value="false"/>
+                           <struct name="callback">
+                              <setting name="name" value=""/>
+                              <setting name="userData" value=""/>
+                           </struct>
+                           <set name="flags">
+                              <selected/>
+                           </set>
+                           <setting name="slaveAddress" value="0"/>
+                           <setting name="direction" value="kLPI2C_Write"/>
+                           <setting name="subaddress" value="0"/>
+                           <setting name="subaddressSize" value="1"/>
+                           <setting name="blocking_buffer" value="false"/>
+                           <setting name="enable_custom_buffer" value="false"/>
+                           <setting name="dataSize" value="1"/>
+                        </struct>
+                     </config_set>
+                  </instance>
+                  <instance name="LPI2C3" uuid="380d026c-79ee-49fe-8619-e60a804c1720" type="lpi2c" type_id="lpi2c_2.2.0" mode="master" peripheral="LPI2C3" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                     <config_set name="main">
+                        <setting name="clockSource" value="Lpi2cClock"/>
+                        <setting name="clockSourceFreq" value="GetIpFreq"/>
+                     </config_set>
+                     <config_set name="interrupt_vector"/>
+                     <config_set name="master" quick_selection="qs_master_transfer">
+                        <setting name="mode" value="transfer"/>
+                        <struct name="config">
+                           <setting name="enableMaster" value="true"/>
+                           <setting name="enableDoze" value="true"/>
+                           <setting name="debugEnable" value="false"/>
+                           <setting name="ignoreAck" value="false"/>
+                           <setting name="pinConfig" value="kLPI2C_2PinOpenDrain"/>
+                           <setting name="baudRate_Hz" value="100000"/>
+                           <setting name="busIdleTimeout_ns" value="0"/>
+                           <setting name="pinLowTimeout_ns" value="0"/>
+                           <setting name="sdaGlitchFilterWidth_ns" value="0"/>
+                           <setting name="sclGlitchFilterWidth_ns" value="0"/>
+                           <struct name="hostRequest">
+                              <setting name="enable" value="false"/>
+                              <setting name="source" value="kLPI2C_HostRequestExternalPin"/>
+                              <setting name="polarity" value="kLPI2C_HostRequestPinActiveHigh"/>
+                           </struct>
+                           <set name="edmaRequestSources">
+                              <selected/>
+                           </set>
+                        </struct>
+                        <struct name="transfer">
+                           <setting name="blocking" value="false"/>
+                           <setting name="enable_custom_handle" value="false"/>
+                           <struct name="callback">
+                              <setting name="name" value=""/>
+                              <setting name="userData" value=""/>
+                           </struct>
+                           <set name="flags">
+                              <selected/>
+                           </set>
+                           <setting name="slaveAddress" value="0"/>
+                           <setting name="direction" value="kLPI2C_Write"/>
+                           <setting name="subaddress" value="0"/>
+                           <setting name="subaddressSize" value="1"/>
+                           <setting name="blocking_buffer" value="false"/>
+                           <setting name="enable_custom_buffer" value="false"/>
+                           <setting name="dataSize" value="1"/>
+                        </struct>
+                     </config_set>
+                  </instance>
+               </instances>
             </functional_group>
          </functional_groups>
          <components>
-            <component name="system" type_id="system_54b53072540eeeb8f8e9343e71f28176">
-               <config_set_global name="global_system_definitions"/>
+            <component name="system" uuid="2c0e0fdb-d88b-487d-8d5e-8a5f5e794f43" type_id="system_54b53072540eeeb8f8e9343e71f28176">
+               <config_set_global name="global_system_definitions">
+                  <setting name="user_definitions" value=""/>
+                  <setting name="user_includes" value=""/>
+                  <setting name="global_init" value=""/>
+               </config_set_global>
             </component>
-            <component name="msg" type_id="msg_6e2baaf3b97dbeef01c0043275f9a0e7">
+            <component name="msg" uuid="6ed61508-a91a-44ec-ae3a-f2d9e2625e18" type_id="msg_6e2baaf3b97dbeef01c0043275f9a0e7">
                <config_set_global name="global_messages"/>
+            </component>
+            <component name="uart_cmsis_common" uuid="b1aed83d-d484-4bb1-98b6-ff82c3cc8024" type_id="uart_cmsis_common">
+               <config_set_global name="global_USART_CMSIS_common" quick_selection="default"/>
+            </component>
+            <component name="gpio_adapter_common" uuid="6f4b78bc-431b-4b50-9032-90f347e39f79" type_id="gpio_adapter_common">
+               <config_set_global name="global_gpio_adapter_common" quick_selection="default"/>
+            </component>
+            <component name="generic_uart" uuid="9a6dbaf0-ad5e-40de-9e88-39c12f10a5fc" type_id="generic_uart">
+               <config_set_global name="global_uart"/>
+            </component>
+            <component name="generic_enet" uuid="881978de-4045-4dd1-adb7-42358cd69888" type_id="generic_enet">
+               <config_set_global name="global_enet"/>
+            </component>
+            <component name="generic_can" uuid="dddc8bfe-3123-41a8-a861-29527aef388c" type_id="generic_can">
+               <config_set_global name="global_can"/>
             </component>
          </components>
       </periphs>
+      <tee name="TEE" version="7.0" enabled="false" update_project_code="true">
+         <generated_project_files/>
+         <tee_profile>
+            <processor_version>N/A</processor_version>
+         </tee_profile>
+      </tee>
    </tools>
 </configuration>

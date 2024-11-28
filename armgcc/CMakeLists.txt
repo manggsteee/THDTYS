@@ -52,6 +52,8 @@ add_executable(${MCUX_SDK_PROJECT_NAME}
 "${ProjDirPath}/../board.h"
 "${ProjDirPath}/../clock_config.c"
 "${ProjDirPath}/../clock_config.h"
+"${ProjDirPath}/../max30102.c"
+"${ProjDirPath}/../max30102.h"
 )
 
 target_include_directories(${MCUX_SDK_PROJECT_NAME} PRIVATE
