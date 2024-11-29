@@ -1,0 +1,3 @@
+D:/Documents/GTMT/Bai1/THDTYS/cmake-build-debug/CMakeFiles/THDTYS.dir
+D:/Documents/GTMT/Bai1/THDTYS/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Documents/GTMT/Bai1/THDTYS/cmake-build-debug/CMakeFiles/rebuild_cache.dir
